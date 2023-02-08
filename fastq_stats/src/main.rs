@@ -1,6 +1,6 @@
+use bio::io::fastq;
 use clap::Parser;
 use std::fs::File;
-use bio::io::fastq;
 use std::path::Path;
 
 /// Parse one or more fastq files and print stats. Optionally output length filtered reads.
@@ -13,7 +13,7 @@ struct Args {
 
     /// output file
     #[arg(short, long)]
-    output: Option<String>, 
+    output: Option<String>,
 
     /// Input files, gzipped fastq
     #[arg(required = true)]
@@ -38,10 +38,10 @@ fn main() {
 
     // Iterate over input files
     for file_name in args.input {
-        let mut reader = fastq::Reader::new(File::open(file_name).unwrap());
+        let reader = fastq::Reader::new(File::open(file_name).unwrap());
         // Iterate over records
         for record in reader.records() {
-            let mut record = record.unwrap();
+            let record = record.unwrap();
             let seq = record.seq();
             let id = record.id();
             // let desc = record.desc();
@@ -49,7 +49,9 @@ fn main() {
             if len >= args.minlength {
                 println!("{} {}", id, len);
                 if let Some(writer) = &mut writer {
-                    writer.write_record(&record);
+                    writer
+                        .write_record(&record)
+                        .expect("Couldn't write output file");
                 }
             }
         }
