@@ -1,7 +1,7 @@
 use clap::Parser;
 use std::fs::File;
-use seq_io::fastq::{Reader,Record};
-
+use bio::io::fastq;
+use std::path::Path;
 
 /// Parse one or more fastq files and print stats. Optionally output length filtered reads.
 #[derive(Parser, Debug)]
@@ -24,35 +24,34 @@ fn main() {
     // Ingest command line arguments
     let args = Args::parse();
 
-    // Open input files
-    let mut readers: Vec<Reader<std::fs::File>> = Vec::new();
-    for file in args.input {
-        let reader = Reader::from_file(file).unwrap();
-        readers.push(reader);
-    }
+    // Builds on https://docs.rs/bio/0.32.0/bio/io/fastq/index.html
 
     // Open output file
-    let mut out_file: Option<File> = None;
-    if let Some(output) = args.output {
-        out_file = File::create(output);
+    let mut writer: Option<fastq::Writer<File>> = None;
+    if let Some(out_name) = args.output {
+        // let mut writer = fastq::Writer::new(io::stdout());
+        // let out_name = args.output.unwrap();
+        let out_path = Path::new(&out_name);
+        let out_file = File::create(out_path).unwrap();
+        writer = Some(fastq::Writer::new(out_file));
     }
 
     // Iterate over input files
-    for reader in readers {
+    for file_name in args.input {
+        let mut reader = fastq::Reader::new(File::open(file_name).unwrap());
         // Iterate over records
         for record in reader.records() {
             let mut record = record.unwrap();
             let seq = record.seq();
-            let id = record.id().unwrap();
+            let id = record.id();
             // let desc = record.desc();
             let len = seq.len();
             if len >= args.minlength {
                 println!("{} {}", id, len);
-                if let Some(writer) = &mut out_file {
-                    record.write_to(&mut writer);
+                if let Some(writer) = &mut writer {
+                    writer.write_record(&record);
                 }
             }
         }
     }
-
 }
