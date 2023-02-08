@@ -7,11 +7,11 @@ use std::path::Path;
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
 struct Args {
-    /// k-mer length
+    /// Minimum length of reads to consider
     #[arg(short, long, default_value_t = 0)]
     minlength: usize,
 
-    /// output file
+    /// Output file
     #[arg(short, long)]
     output: Option<String>,
 
@@ -29,8 +29,6 @@ fn main() {
     // Open output file
     let mut writer: Option<fastq::Writer<File>> = None;
     if let Some(out_name) = args.output {
-        // let mut writer = fastq::Writer::new(io::stdout());
-        // let out_name = args.output.unwrap();
         let out_path = Path::new(&out_name);
         let out_file = File::create(out_path).unwrap();
         writer = Some(fastq::Writer::new(out_file));
