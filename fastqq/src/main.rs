@@ -9,9 +9,12 @@ fn main() -> io::Result<()> {
 
     // Iterate over each record and print the length and mean quality
     while let Some(result) = reader.next() {
-        let record = result?;
+        let record = result.unwrap();
         let length = record.seq().len();
-        let mean_quality = record.qual().iter().map(|q| q.to_ascii_qual()).sum::<u32>() / length as u32;
+        //let mean_quality = record.qual().iter().sum::<u32>() / length as u32;
+
+        // Get the mean quality of the record
+        let mean_quality:f64 = record.qual().iter().map(|q| q - 33).map(|q| q as f64).sum::<f64>() / length as f64;
 
         println!("Length: {}, Mean quality: {}", length, mean_quality);
     }
