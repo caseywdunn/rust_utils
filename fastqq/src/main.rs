@@ -16,7 +16,7 @@ fn main() -> io::Result<()> {
         // Get the mean quality of the record
         let mean_quality:f64 = record.qual().iter().map(|q| q - 33).map(|q| q as f64).sum::<f64>() / length as f64;
 
-        println!("Length: {}, Mean quality: {}", length, mean_quality);
+        println!("{} {}", length, mean_quality);
     }
 
     Ok(())
