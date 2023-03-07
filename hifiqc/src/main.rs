@@ -28,19 +28,17 @@ fn main() {
         let q = record.qualities().raw();
 
         // create geometric mean of qualities
-        let mut q_prod:f64 = 1.0;
+        let mut q_mean:f64 = 0.0;
         for i in 0..q.len() {
-            q_prod *= (q[i] as f64);
+            q_mean += (q[i] as f64).ln();
         }
-        let q_mean = q_prod.powf(1.0/(q.len() as f64));
+        q_mean = q_mean / (q.len() as f64);
+        q_mean = q_mean.exp();
 
-        let name = " ";
-        //record.name()
+        let name = std::str::from_utf8(record.name()).unwrap();
 
-        println!("{} {} {} {}", name, record.sequence().len(), q_mean, np_val);
+        println!("{} {} {} {}", name, record.sequence().len(), np_val, q_mean);
 
-        // Print the record information
-        //println!("{}:{}-{} {}", record.tid(), record.pos(), record.cigar().end_pos(), record.seq().len());
     }
 }
 
