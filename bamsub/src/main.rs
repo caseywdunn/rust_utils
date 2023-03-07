@@ -22,7 +22,7 @@ fn main() {
 
     // Write n records to output BAM file
     let mut records_written = 0;
-    for record in reader.records() {
+    for record in reader {
         let record = record.unwrap();
         writer.write(&record).unwrap();
         records_written += 1;
@@ -31,6 +31,4 @@ fn main() {
         }
     }
 
-    // Close files
-    writer.finish().unwrap();
 }
