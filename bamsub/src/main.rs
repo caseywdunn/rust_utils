@@ -1,4 +1,4 @@
-use bam::Read;
+
 
 fn main() {
     // Parse command line arguments
@@ -12,11 +12,11 @@ fn main() {
     let output_bam = &args[3];
 
     // Open input BAM file
-    let mut reader = bam::Reader::from_path(input_bam).unwrap();
+    let mut reader = bam::BamReader::from_path(input_bam).unwrap();
 
     // Open output BAM file
     let header = reader.header().clone();
-    let mut writer = bam::Writer::build()
+    let mut writer = bam::BamWriter::build()
         .from_path(output_bam, &header)
         .unwrap();
 
