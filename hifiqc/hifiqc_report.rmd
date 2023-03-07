@@ -1,0 +1,91 @@
+---
+title: "HiFiQC"
+output: html_document
+params:
+  in_file: "data/m64146_230129_025539.100.hifi_reads.stats"
+---
+
+```{r}
+library(ggplot2)
+library(ggExtra)
+```
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r}
+calculate_N50 = function(seq_lengths) {
+  # Sort the sequence lengths in descending order
+  sorted_lengths <- sort(seq_lengths, decreasing = TRUE)
+  
+  # Calculate the total length of all sequences
+  total_length <- sum(sorted_lengths)
+  
+  # Calculate the midpoint of the total length
+  midpoint <- total_length / 2
+  
+  # Loop through the sequence lengths until the midpoint is reached
+  current_length <- 0
+  for (i in 1:length(sorted_lengths)) {
+    current_length <- current_length + sorted_lengths[i]
+    if (current_length >= midpoint) {
+      # The current sequence length is the N50
+      return(sorted_lengths[i])
+    }
+  }
+}
+```
+
+
+
+
+```{r}
+D = read.table(params$in_file, header=TRUE, sep=" ")
+```
+
+
+
+For more information on this tool, see https://github.com/caseywdunn/rust_utils/tree/master/hifiqc .
+
+Date: `r Sys.Date()`
+
+Input bam file: `r params$in_file`
+
+Number of reads: `r nrow(D)`
+
+N50 of reads: `r calculate_N50(D$len)`
+
+Max read length: `r max(D$length)`
+
+
+```{r}
+p = ggplot(D, aes(x=length, y=readscore) ) 
+ggMarginal(p + geom_point(alpha=0.2))
+```
+
+```{r}
+p = ggplot(D, aes(x=length, y=quality_mean)  ) 
+ggMarginal(p + geom_point(alpha=0.2))
+```
+
+```{r}
+p = ggplot(D, aes(x=length, y=np)  ) 
+ggMarginal(p + geom_point(alpha=0.2))
+```
+
+```{r}
+p = ggplot(D, aes(x=readscore, y=quality_mean)  ) 
+ggMarginal(p + geom_point(alpha=0.2))
+```
+
+```{r}
+p = ggplot(D, aes(x=np, y=quality_mean)  ) 
+ggMarginal(p + geom_point(alpha=0.2))
+```
+
+```{r}
+p = ggplot(D, aes(x=np, y=readscore)  ) 
+ggMarginal(p + geom_point(alpha=0.2))
+```
