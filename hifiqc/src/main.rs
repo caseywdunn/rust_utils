@@ -16,7 +16,7 @@ fn main() {
         let record = record_result.unwrap();
 
         // Print the record information
-        println!("{}:{}-{} {}", record.tid(), record.pos(), record.cigar().end_pos(), record.seq().len());
+        //println!("{}:{}-{} {}", record.tid(), record.pos(), record.cigar().end_pos(), record.seq().len());
     }
 }
 
