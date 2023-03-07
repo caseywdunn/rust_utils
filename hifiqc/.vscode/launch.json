@@ -1,0 +1,45 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug executable 'hifiqc'",
+			"cargo": {
+				"args": [
+					"build",
+					"--bin=hifiqc",
+					"--package=hifiqc"
+				],
+				"filter": {
+					"name": "hifiqc",
+					"kind": "bin"
+				}
+			},
+			"args": ["data/m64146_230129_025539.100.hifi_reads.bam"],
+			"cwd": "${workspaceFolder}"
+		},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug unit tests in executable 'hifiqc'",
+			"cargo": {
+				"args": [
+					"test",
+					"--no-run",
+					"--bin=hifiqc",
+					"--package=hifiqc"
+				],
+				"filter": {
+					"name": "hifiqc",
+					"kind": "bin"
+				}
+			},
+			"args": [],
+			"cwd": "${workspaceFolder}"
+		}
+	]
+}

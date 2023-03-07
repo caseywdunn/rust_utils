@@ -15,6 +15,8 @@ fn main() {
         // Unwrap the record result
         let record = record_result.unwrap();
 
+        // println!("{}", record.seq.len);
+
         // Print the record information
         //println!("{}:{}-{} {}", record.tid(), record.pos(), record.cigar().end_pos(), record.seq().len());
     }
