@@ -15,7 +15,18 @@ fn main() {
         // Unwrap the record result
         let record = record_result.unwrap();
 
-        // println!("{}", record.seq.len);
+        // https://docs.rs/bam/latest/bam/record/struct.Record.html
+        let tags = record.tags();
+
+        // https://docs.rs/bam/latest/bam/record/tags/struct.TagViewer.html
+        // https://docs.rs/bam/latest/bam/record/tags/enum.TagValue.html
+        let np = tags.get(b"np").unwrap();
+
+        //let x=5;
+
+
+
+        //println!("{}", np);
 
         // Print the record information
         //println!("{}:{}-{} {}", record.tid(), record.pos(), record.cigar().end_pos(), record.seq().len());
