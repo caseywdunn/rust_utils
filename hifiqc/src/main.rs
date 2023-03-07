@@ -40,7 +40,7 @@ fn main() {
         for i in 0..q.len() {
             q_mean += (q[i] as f64).ln();
         }
-        q_mean = q_mean / (q.len() as f64);
+        q_mean /= q.len() as f64;
         q_mean = q_mean.exp();
 
         let name = std::str::from_utf8(record.name()).unwrap();
