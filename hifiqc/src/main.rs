@@ -16,17 +16,27 @@ fn main() {
         let record = record_result.unwrap();
 
         // https://docs.rs/bam/latest/bam/record/struct.Record.html
-        let tags = record.tags();
-
         // https://docs.rs/bam/latest/bam/record/tags/struct.TagViewer.html
         // https://docs.rs/bam/latest/bam/record/tags/enum.TagValue.html
+        let tags = record.tags();
         let np = tags.get(b"np").unwrap();
+        let mut np_val:i64 = 0;
+        match np {
+            bam::record::tags::TagValue::Int(val, _) => np_val= val,
+            _ => panic!("Not an integer value"),
+        }
 
-        //let x=5;
+        let q = record.qualities();
+
+        // create geometric mean of qualities
+        let mut q_sum:f64 = 0.0;
+        for i in 0..q.len() {
+            q_sum += 10.0_f64.powf(q[i] as f64 / -10.0);
+        }
+        let q_mean = 10.0 * q_sum.log10() / q.len() as f64;
 
 
-
-        //println!("{}", np);
+        println!("{} {} {} {}", record.name(), record.sequence().len(), q_mean, np_val);
 
         // Print the record information
         //println!("{}:{}-{} {}", record.tid(), record.pos(), record.cigar().end_pos(), record.seq().len());
