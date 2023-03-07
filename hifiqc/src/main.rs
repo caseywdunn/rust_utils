@@ -23,22 +23,20 @@ fn main() {
         let tags = record.tags();
 
         let np = tags.get(b"np").unwrap();
-        let np_val:i64 = match np {
+        let np_val: i64 = match np {
             bam::record::tags::TagValue::Int(val, _) => val,
             _ => panic!("Not an integer value"),
         };
 
-
         let rq = tags.get(b"rq").unwrap();
-        let rq_val:f32 = match rq {
+        let rq_val: f32 = match rq {
             bam::record::tags::TagValue::Float(val) => val,
             _ => panic!("Not a float value"),
         };
 
-
         // create geometric mean of qualities
         let q = record.qualities().raw();
-        let mut q_mean:f64 = 0.0;
+        let mut q_mean: f64 = 0.0;
         for i in 0..q.len() {
             q_mean += (q[i] as f64).ln();
         }
@@ -47,8 +45,13 @@ fn main() {
 
         let name = std::str::from_utf8(record.name()).unwrap();
 
-        println!("{} {} {} {:.2} {}", name, record.sequence().len(), np_val, q_mean, rq_val);
-
+        println!(
+            "{} {} {} {:.2} {}",
+            name,
+            record.sequence().len(),
+            np_val,
+            q_mean,
+            rq_val
+        );
     }
 }
-
