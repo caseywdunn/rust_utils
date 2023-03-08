@@ -16,3 +16,5 @@ Cargo.lock
 .DS_Store
 
 *.html
+data/*.log
+data/*.png
