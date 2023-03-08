@@ -83,6 +83,11 @@ def main() -> int:
     fig = ax.get_figure()
     fig.savefig(out_file_name + ".readscore_v_qualitymean.png")
     fig.clf()
+
+    ax = df.plot.hexbin(x='length', y='quality_mean', gridsize=20, bins='log')
+    fig = ax.get_figure()
+    fig.savefig(out_file_name + ".qualitymean_v_length.png")
+    fig.clf()   
     
     # Open the output log file
     with open(out_file_name + ".log", 'w') as log_file:
@@ -92,6 +97,8 @@ def main() -> int:
         log_file.write("Number of reads: " + str(len(df)) + "\n")
         log_file.write("Total length: " + str(sum(df['length'])) + "\n")
         log_file.write("N50: " + str(n50(df['length'])) + "\n")
+    
+    return 0
         
 if __name__ == '__main__':
     sys.exit(main())  # next section explains the use of sys.exit
