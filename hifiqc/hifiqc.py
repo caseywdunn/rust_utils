@@ -91,12 +91,12 @@ def main() -> int:
     
     # Open the output log file
     with open(out_file_name + ".log", 'w') as log_file:
-        log_file.write("Date and time: " + str(datetime.datetime.now()) + "\n")
-        log_file.write("Input file: " + in_file + "\n")
-        log_file.write("Output file: " + out_file_name + "\n")
-        log_file.write("Number of reads: " + str(len(df)) + "\n")
-        log_file.write("Total length: " + str(sum(df['length'])) + "\n")
-        log_file.write("N50: " + str(n50(df['length'])) + "\n")
+        log_file.write("Date and time: " + str(datetime.datetime.now()))
+        log_file.write("Input file: " + in_file)
+        log_file.write("Output file: " + out_file_name)
+        log_file.write("Number of reads: " + str(len(df)))
+        log_file.write("Total length: " + str(sum(df['length'])))
+        log_file.write("N50: " + str(n50(df['length'])))
     
     return 0
         
